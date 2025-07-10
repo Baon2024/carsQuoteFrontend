@@ -37,7 +37,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     let formData = new FormData()
     formData.append("image", uploadedFile.file);
 
-    const response = await fetch('http://localhost:5001/identify-image', {
+    const response = await fetch('https://sellermvpbackend.onrender.com/identify-image', {
       method: 'POST',
       body: formData,
     });

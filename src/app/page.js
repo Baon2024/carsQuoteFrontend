@@ -57,7 +57,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await sleep(2000)
     toast("identifying price")
     //api call to get price
-   const response2 = await fetch('http://localhost:5001/getPriceEndpoint', {
+   const response2 = await fetch('https://sellermvpbackend.onrender.com/getPriceEndpoint', {//https://sellermvpbackend.onrender.com/
   method: 'POST',
   headers: {
     'Content-Type': 'application/json', // 🔥 Tell server it's JSON

@@ -5,6 +5,7 @@ import { Button } from "./button";
 import { toast } from "sonner";
 import Modal from "./modal";
 import { supabase } from "./supabase";
+import { Loader2 } from 'lucide-react';
 
 export default function Home() {
 
@@ -17,6 +18,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ emailBox, setEmailBox ] = useState(false);
   const [ email, setEmail ] = useState("");
+  const [ loading, setLoading ] = useState(false)
   /*const [uploadedFile, setUploadedFile] = useState({
   file: { name: '', size: 0, type: '' },
   preview: ''
@@ -26,7 +28,8 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   async function getProductThenPrice() {
 
-    //setLoading(true)
+    setLoading(true)
+
     if (uploadedFile === null) {
     alert("Need to upload product image!")
     return null
@@ -71,12 +74,13 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     setPrice(data2.lowest_price)
     setIsModalOpen(true)
+    setLoading(false)
 
   }
   
   useEffect(() => {
     console.log("value of uploadedFile is: ", uploadedFile);
-  })
+  },[])
 
   function toggleEmail() {
     setEmailBox(true)
@@ -112,12 +116,20 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
             Image Upload
           </h1>
           <div className="space-y-4">
-  <Button 
-    onClick={getProductThenPrice}
-    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
-  >
-    Get Price & Condition
-  </Button>
+  <Button
+              onClick={getProductThenPrice}
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:transform-none disabled:shadow-none"
+            >
+              {loading ? (
+                <div className="flex items-center justify-center space-x-2">
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span>Processing...</span>
+                </div>
+              ) : (
+                "Get Price & Condition"
+              )}
+            </Button>
   
   
 </div>
@@ -126,6 +138,21 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
             Support for JPG, PNG, and WebP formats.
           </p>
         </div>
+
+        {/* Loading Status Display */}
+            {loading && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 animate-in slide-in-from-top duration-300">
+                <div className="flex items-center justify-center space-x-3">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                  </div>
+                  <span className="text-blue-700 font-medium">Analyzing your product...</span>
+                </div>
+                <p className="text-center text-blue-600 text-sm mt-2">This may take a few moments</p>
+              </div>
+            )}
 
         <Modal joinWaitlist={joinWaitlist} setEmail={setEmail} emailBox={emailBox} toggleEmail={toggleEmail} product={product} condition={condition} price={price} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Basic Modal" showFooter={false}></Modal>
         

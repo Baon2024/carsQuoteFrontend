@@ -8,6 +8,7 @@ import { supabase } from "./supabase";
 import { Loader2 } from 'lucide-react';
 
 export default function Home() {
+  
 
    
 
@@ -80,7 +81,8 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   
   useEffect(() => {
     console.log("value of uploadedFile is: ", uploadedFile);
-  },[])
+    console.log("value of price is: ", price)
+  },[uploadedFile, price])
 
   function toggleEmail() {
     setEmailBox(true)

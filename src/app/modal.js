@@ -28,6 +28,8 @@ export default function Modal({
       }
     }
 
+  
+
     if (isOpen) {
       document.addEventListener("keydown", handleEscape)
       document.body.style.overflow = "hidden"
@@ -76,7 +78,7 @@ export default function Modal({
               </div>
               <div className="flex justify-between items-center border-t border-gray-200 pt-2">
                 <span className="text-sm font-medium text-gray-500">Price</span>
-                <span className="text-xl font-bold text-green-600">£{price}</span>
+                <span className="text-xl font-bold text-green-600">{typeof price === "number" ? `£${price}` : price}</span>
               </div>
             </div>
           </div>

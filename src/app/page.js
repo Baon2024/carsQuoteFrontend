@@ -11,7 +11,7 @@ import Modal4Image from "./modal4Image";
 
 export default function Home() {
   
-  let baseUrl = process.env.SERVER_URL || "http://localhost:5005"
+  let baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5005"
    
 
   const [uploadedFile, setUploadedFile] = useState(null);

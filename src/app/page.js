@@ -185,9 +185,9 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
         <Modal vehicleDetails={vehicleDetails} joinWaitlist={joinWaitlist} setEmail={setEmail} emailBox={emailBox} toggleEmail={toggleEmail} product={product} condition={condition} price={price} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Basic Modal" showFooter={false}></Modal>
         
-        <Modal4Image setIsOpen4Image={setIsOpen4Image} isOpen4Image={isOpen4Image} setIsModalOpen={setIsModalOpen} setPrice={setPrice} />
+        <Modal4Image  setIsOpen4Image={setIsOpen4Image} isOpen4Image={isOpen4Image} setIsModalOpen={setIsModalOpen} setPrice={setPrice} />
 
-        <ImageUpload uploadedFile={uploadedFile} setUploadedFile={setUploadedFile} />
+        <ImageUpload baseUrl={baseUrl} uploadedFile={uploadedFile} setUploadedFile={setUploadedFile} />
       </div>
     </div>
   );

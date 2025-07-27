@@ -14,7 +14,8 @@ export default function Modal4Image({
   cancelText = "Cancel",
   setIsModalOpen,
   setPrice,
-  setIsOpen4Image
+  setIsOpen4Image,
+  baseUrl
 }) {
   // Local state for each image
   const [carFront, setCarFront] = useState(null);

@@ -8,9 +8,10 @@ import Modal from "./modal";
 import { Loader2 } from 'lucide-react';
 import Modal4Image from "./modal4Image";
 
+
 export default function Home() {
   
-
+  let baseUrl = process.env.SERVER_URL || "http://localhost:5005"
    
 
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -51,7 +52,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     let formData = new FormData()
     formData.append("image", uploadedFile.file);
 
-    const response = await fetch('http://localhost:5005/identify-image', {
+    const response = await fetch(`${baseUrl}/identify-image`, {
       method: 'POST',
       body: formData,
     });
@@ -69,7 +70,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await sleep(2000)
     toast("identifying price")
     //api call to get price
-   const response2 = await fetch('http://localhost:5005/getWBAYandGeneratePrice', {//https://sellermvpbackend.onrender.com/
+   const response2 = await fetch(`${baseUrl}/getWBAYandGeneratePrice`, {//https://sellermvpbackend.onrender.com/
   method: 'POST',
   headers: {
     'Content-Type': 'application/json', // 🔥 Tell server it's JSON

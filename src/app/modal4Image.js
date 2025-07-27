@@ -68,7 +68,7 @@ export default function Modal4Image({
 
     console.log("upload images button fired!")
     setIsOpen4Image(false)
-    const response = await fetch('http://localhost:5005/llmAssessCarDamage', {
+    const response = await fetch(`${baseUrl}/llmAssessCarDamage`, {
       method: 'POST',
       body: formData,
     });

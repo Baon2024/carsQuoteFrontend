@@ -166,7 +166,7 @@ const ImageUpload = ({ uploadedFile, setUploadedFile }) => {
           key={uploadedFile === null ? 'reset' : 'set'}
           type="file"
           /*multiple*/
-          accept="image/*"
+          accept="image/*"//only acceot png or jpeg
           onChange={handleFileSelect}
           className="hidden"
         />

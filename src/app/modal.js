@@ -18,7 +18,8 @@ export default function Modal({
   toggleEmail,
   emailBox,
   setEmail,
-  joinWaitlist
+  joinWaitlist,
+  vehicleDetails
 }) {
   // Handle escape key
   useEffect(() => {
@@ -71,6 +72,12 @@ export default function Modal({
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium text-gray-500">Product</span>
                 <span className="text-lg font-semibold text-gray-900">{product}</span>
+                { vehicleDetails && Object.entries(vehicleDetails).map(([key, value], index) => (
+                  <div key={index}>
+                    <p>{key}</p>
+                    <p>{value}</p>
+                  </div>
+                ))}
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium text-gray-500">Condition</span>
@@ -95,7 +102,6 @@ export default function Modal({
           </div>
           )}
           
-
           {/* Email Form */}
           {emailBox && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-4">

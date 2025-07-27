@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { Button } from "./button";
 import { toast } from "sonner";
 import Modal from "./modal";
-import { supabase } from "./supabase";
+//import { supabase } from "./supabase";
 import { Loader2 } from 'lucide-react';
+import Modal4Image from "./modal4Image";
 
 export default function Home() {
   
@@ -14,9 +15,18 @@ export default function Home() {
 
   const [uploadedFile, setUploadedFile] = useState(null);
   const [ price, setPrice ] = useState("")
+  const [vehicleDetails, setVehicleDetails] = useState({
+  color: "",
+  engine: "",
+  make: "",
+  model: "",
+  transmission: "",
+  year: ""
+});
   const [ product, setProduct ] = useState("")
    const [ condition, setCondition ] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [ isOpen4Image, setIsOpen4Image ] = useState(false)
   const [ emailBox, setEmailBox ] = useState(false);
   const [ email, setEmail ] = useState("");
   const [ loading, setLoading ] = useState(false)
@@ -41,40 +51,53 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     let formData = new FormData()
     formData.append("image", uploadedFile.file);
 
-    const response = await fetch('https://sellermvpbackend.onrender.com/identify-image', {
+    const response = await fetch('http://localhost:5005/identify-image', {
       method: 'POST',
       body: formData,
     });
 
     let data = await response.json();
-    const { product, condition } = data;
-    setCondition(condition);
-    setProduct(product);
-    let item_name = product;
-    let item_condition = condition
-    console.log("value of product and condition are: ", product, condition);
+    const { regNum } = data;
+    //setCondition(condition);
+    //setProduct(product);
+    
+    console.log("value of regNum is: ", regNum);
 
-    toast(`Product identified: ${product}`)
-    await sleep(2000) //waits 2 seconds
-    toast(`Condition identified: ${condition}`)
+    
+    //toast(`placeholder is: ${placeholder}`)
     
     await sleep(2000)
     toast("identifying price")
     //api call to get price
-   const response2 = await fetch('https://sellermvpbackend.onrender.com/getPriceEndpoint', {//https://sellermvpbackend.onrender.com/
+   const response2 = await fetch('http://localhost:5005/getWBAYandGeneratePrice', {//https://sellermvpbackend.onrender.com/
   method: 'POST',
   headers: {
     'Content-Type': 'application/json', // 🔥 Tell server it's JSON
   },
-  body: JSON.stringify({ item_name, item_condition }),
+  body: JSON.stringify({ regNum }),
 });
 
     let data2 = await response2.json();
-    console.log("data returned for price is: ", data2);
-    toast.success("Price found!")
+    const { carSpecs } = data2
+    console.log("carSpecs from backend is, ", carSpecs)
+    setVehicleDetails({
+      color: carSpecs.color,
+  engine: carSpecs.engine,
+  make: carSpecs.make,
+  model: carSpecs.model,
+  transmission: carSpecs.transmission,
+  year: carSpecs.year
+  })
 
-    setPrice(data2.lowest_price)
-    setIsModalOpen(true)
+    if (carSpecs) { 
+      toast.success("successfuly pinpointed exact car tye!")
+    }
+    
+    //if object with detailedCarInfo is returned, then setUload4icsModal(true)
+    //require them to uload 4 ics, one er side (can add logic to only accet each if llm judges its right side)
+    
+    //setIsModalOpen(true)
+    setIsOpen4Image(true)
     setLoading(false)
 
   }
@@ -82,7 +105,8 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   useEffect(() => {
     console.log("value of uploadedFile is: ", uploadedFile);
     console.log("value of price is: ", price)
-  },[uploadedFile, price])
+    console.log("valye of isOpen4Image: ", isOpen4Image)
+  },[uploadedFile, price, isOpen4Image])
 
   function toggleEmail() {
     setEmailBox(true)
@@ -92,7 +116,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       //add email to supabase database
       console.log("joinWaitlist function activated!")
 
-      const { data, error } = await supabase
+      /*const { data, error } = await supabase
       .from('waitlist')
       .insert([
         { email: email },
@@ -106,7 +130,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
         setUploadedFile(null);
       } else if (error) {
         toast("failed to add to launch waitlist!")
-      }
+      }*/
   }
 
 
@@ -156,8 +180,10 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
               </div>
             )}
 
-        <Modal joinWaitlist={joinWaitlist} setEmail={setEmail} emailBox={emailBox} toggleEmail={toggleEmail} product={product} condition={condition} price={price} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Basic Modal" showFooter={false}></Modal>
+        <Modal vehicleDetails={vehicleDetails} joinWaitlist={joinWaitlist} setEmail={setEmail} emailBox={emailBox} toggleEmail={toggleEmail} product={product} condition={condition} price={price} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Basic Modal" showFooter={false}></Modal>
         
+        <Modal4Image setIsOpen4Image={setIsOpen4Image} isOpen4Image={isOpen4Image} setIsModalOpen={setIsModalOpen} setPrice={setPrice} />
+
         <ImageUpload uploadedFile={uploadedFile} setUploadedFile={setUploadedFile} />
       </div>
     </div>

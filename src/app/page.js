@@ -65,12 +65,13 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     //setProduct(product);
     
     console.log("value of regNum is: ", regNum);
+    toast.success(`obtained registration number: ${regNum}`)
 
     
     //toast(`placeholder is: ${placeholder}`)
     
     await sleep(2000)
-    toast("identifying price")
+    //toast("identifying price")
     //api call to get price
    const response2 = await fetch(`${baseUrl}/getWBAYandGeneratePrice`, {//https://sellermvpbackend.onrender.com/
   method: 'POST',
@@ -93,7 +94,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   })
 
     if (carSpecs) { 
-      toast.success("successfuly pinpointed exact car tye!")
+      toast.success(`pinpointed exact car: ${carSpecs.year}, ${carSpecs.make}, ${carSpecs.model}, ${carSpecs.color}, ${carSpecs.engine}, ${carSpecs.transmission}!`)
     }
     
     //if object with detailedCarInfo is returned, then setUload4icsModal(true)

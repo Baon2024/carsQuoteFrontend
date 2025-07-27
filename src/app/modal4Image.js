@@ -68,7 +68,9 @@ export default function Modal4Image({
     
 
     console.log("upload images button fired!")
+    console.log("baseUrl before fetcht to llmAssessCarDamage is: ", baseUrl);
     setIsOpen4Image(false)
+    toast("generating price!")
     const response = await fetch(`${baseUrl}/llmAssessCarDamage`, {
       method: 'POST',
       body: formData,

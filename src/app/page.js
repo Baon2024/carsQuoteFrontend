@@ -13,7 +13,7 @@ export default function Home() {
   
   let baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5005"
 
-  console.log("baseUrl is: ", baseUrl);
+  console.log("baseUrl is this: ", baseUrl);
    
 
   const [uploadedFile, setUploadedFile] = useState(null);

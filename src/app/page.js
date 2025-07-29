@@ -42,12 +42,14 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   async function getProductThenPrice() {
 
-    setLoading(true)
+    
 
     if (uploadedFile === null) {
     alert("Need to upload product image!")
     return null
     }
+
+    setLoading(true)
 
     toast("product identification triggered!")
 

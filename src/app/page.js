@@ -33,6 +33,13 @@ export default function Home() {
   const [ emailBox, setEmailBox ] = useState(false);
   const [ email, setEmail ] = useState("");
   const [ loading, setLoading ] = useState(false)
+  const [ originalPrice, setOriginalPrice ] = useState("");//think its correct?
+  const [ damageReport, setDamageReport ] = useState({
+    scratches: 0,
+    dents: 0,
+    brokenLights: 0,
+    comments: ""
+  })
   /*const [uploadedFile, setUploadedFile] = useState({
   file: { name: '', size: 0, type: '' },
   preview: ''
@@ -112,7 +119,9 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     console.log("value of uploadedFile is: ", uploadedFile);
     console.log("value of price is: ", price)
     console.log("valye of isOpen4Image: ", isOpen4Image)
-  },[uploadedFile, price, isOpen4Image])
+    console.log("value of originalPrice is: ", originalPrice);
+    console.log("valye of damageReport is: ", damageReport);
+  },[uploadedFile, price, isOpen4Image, originalPrice, damageReport])
 
   function toggleEmail() {
     setEmailBox(true)
@@ -167,7 +176,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 </div>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             Upload your images with ease. Drag and drop or click to select files. 
-            Support for JPG, PNG, and WebP formats.
+            Support for JPG and PNG formats.
           </p>
         </div>
 
@@ -186,9 +195,9 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
               </div>
             )}
 
-        <Modal vehicleDetails={vehicleDetails} joinWaitlist={joinWaitlist} setEmail={setEmail} emailBox={emailBox} toggleEmail={toggleEmail} product={product} condition={condition} price={price} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Basic Modal" showFooter={false}></Modal>
+        <Modal damageReport={damageReport} originalPrice={originalPrice} vehicleDetails={vehicleDetails} joinWaitlist={joinWaitlist} setEmail={setEmail} emailBox={emailBox} toggleEmail={toggleEmail} product={product} condition={condition} price={price} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Basic Modal" showFooter={false}></Modal>
         
-        <Modal4Image baseUrl={baseUrl}  setIsOpen4Image={setIsOpen4Image} isOpen4Image={isOpen4Image} setIsModalOpen={setIsModalOpen} setPrice={setPrice} />
+        <Modal4Image setDamageReport={setDamageReport} setOriginalPrice={setOriginalPrice} baseUrl={baseUrl}  setIsOpen4Image={setIsOpen4Image} isOpen4Image={isOpen4Image} setIsModalOpen={setIsModalOpen} setPrice={setPrice} />
 
         <ImageUpload uploadedFile={uploadedFile} setUploadedFile={setUploadedFile} />
       </div>

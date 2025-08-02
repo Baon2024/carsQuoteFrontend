@@ -151,7 +151,6 @@ const ImageUpload = ({ uploadedFile, setUploadedFile }) => {
           <div className="flex flex-wrap justify-center gap-2 text-sm text-slate-400 mb-6">
             <span className="px-3 py-1 bg-slate-100 rounded-full">JPG</span>
             <span className="px-3 py-1 bg-slate-100 rounded-full">PNG</span>
-            <span className="px-3 py-1 bg-slate-100 rounded-full">WebP</span>
             <span className="px-3 py-1 bg-slate-100 rounded-full">Max 10MB</span>
           </div>
           

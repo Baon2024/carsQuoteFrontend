@@ -15,7 +15,9 @@ export default function Modal4Image({
   setIsModalOpen,
   setPrice,
   setIsOpen4Image,
-  baseUrl
+  baseUrl,
+  setDamageReport,
+  setOriginalPrice
 }) {
   // Local state for each image
   const [carFront, setCarFront] = useState(null);
@@ -80,6 +82,18 @@ export default function Modal4Image({
     console.log("data returned from 4images endpoint is: ", data);
     toast.success("price quote obtained!")
     setPrice(data.finalPrice)
+    setDamageReport(
+  data.damageAssessmentBreakdown === null
+    ? {
+        scratches: 0,
+        dents: 0,
+        brokenLights: 0,
+        comments: ""
+      }
+    : data.damageAssessmentBreakdown
+);
+    setOriginalPrice(data.originalPrice)
+    //need to handle original price and damageBreakdown
     setIsModalOpen(true)
   }
 

@@ -102,9 +102,7 @@ const ImageUpload = ({ uploadedFile, setUploadedFile }) => {
     setUploadedFile(prev => null)
   };
 
-  const openFileDialog = () => {
-    fileInputRef.current?.click();
-  };
+  
 
   const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 Bytes';
@@ -114,11 +112,17 @@ const ImageUpload = ({ uploadedFile, setUploadedFile }) => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
+  const handleRemoveImage = () => {
+    setUploadedFile(null)
+  }
+
   return (
     <div className="space-y-8">
       {/* Upload Area */}
-      <Card 
-        className={`relative overflow-hidden transition-all duration-300 ${
+      {!uploadedFile && (
+        <>
+        <Card 
+        className={`relative overflow-hidden transition-all duration-300 cursor-pointer ${
           isDragOver 
             ? 'border-blue-500 bg-blue-50 scale-[1.02]' 
             : 'border-dashed border-2 border-slate-300 hover:border-slate-400'
@@ -126,6 +130,7 @@ const ImageUpload = ({ uploadedFile, setUploadedFile }) => {
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
+        onClick={() => fileInputRef.current?.click()}
       >
         <div className="p-12 text-center">
           <div className={`mx-auto w-16 h-16 mb-6 rounded-full flex items-center justify-center transition-all duration-300 ${
@@ -141,7 +146,7 @@ const ImageUpload = ({ uploadedFile, setUploadedFile }) => {
           <p className="text-slate-500 mb-6">
             Drag and drop your files here, or{' '}
             <button 
-              onClick={openFileDialog}
+              
               className="text-blue-600 hover:text-blue-700 font-medium underline underline-offset-2"
             >
               browse files
@@ -154,7 +159,7 @@ const ImageUpload = ({ uploadedFile, setUploadedFile }) => {
             <span className="px-3 py-1 bg-slate-100 rounded-full">Max 10MB</span>
           </div>
           
-          <Button onClick={openFileDialog} className="animate-fade-in">
+          <Button  className="animate-fade-in">
             <Upload className="w-4 h-4 mr-2" />
             Choose File
           </Button>
@@ -170,11 +175,15 @@ const ImageUpload = ({ uploadedFile, setUploadedFile }) => {
           className="hidden"
         />
       </Card>
+      </>
+    )}
+      
 
       {/* Uploaded Files */}
       {uploadedFile && (
   <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 animate-fade-in">
     <div className="relative aspect-video bg-slate-100">
+      <Button onClick={handleRemoveImage}>x</Button>
      
         {uploadedFile ? (
   <img

@@ -131,7 +131,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       //add email to supabase database
       console.log("joinWaitlist function activated!")
 
-      /*const { data, error } = await supabase
+      const { data, error } = await supabase
       .from('waitlist')
       .insert([
         { email: email },
@@ -145,7 +145,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
         setUploadedFile(null);
       } else if (error) {
         toast("failed to add to launch waitlist!")
-      }*/
+      }
   }
 
 

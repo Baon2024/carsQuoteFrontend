@@ -1,12 +1,14 @@
 'use client'
+
 import ImageUpload from "../imageUpload";
 import { useEffect, useState } from "react";
 import { Button } from "../button";
 import { toast } from "sonner";
 import Modal from "../modal";
-//import { supabase } from "./supabase";
+//import { supabase } from "@/lib/supabase";
 import { Loader2 } from 'lucide-react';
 import Modal4Image from "../modal4Image";
+import { getWeBuyAnyCarDetails } from "@/lib/weBuyAnyCarFunction";
 
 
 export default function Home() {
@@ -76,12 +78,56 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     console.log("value of regNum is: ", regNum);
     toast.success(`obtained registration number: ${regNum}`)
 
+
+    //add call to WBAY here, then send details to the second endpoint
+    
     
     //toast(`placeholder is: ${placeholder}`)
     
     await sleep(2000)
     //toast("identifying price")
     //api call to get price
+
+    
+
+    if (process.env.NEXT_PUBLIC_SERVER_URL) {
+      console.log("this request is being sent in production environment!!")
+
+      //add logic, a new backend endpoint for adding request to superbase database
+    const response2 = await fetch(`${baseUrl}/getWBAYandGeneratePriceProduction`, {//https://sellermvpbackend.onrender.com/
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json', // 🔥 Tell server it's JSON
+  },
+  body: JSON.stringify({ regNum }),
+});
+
+    const carSpecs = await response2.json(); //this should contain the returned supabase entry
+
+    console.log("carSpecs from production version backend is, ", carSpecs)
+    setVehicleDetails({
+      color: carSpecs.color,
+  engine: carSpecs.engine,
+  make: carSpecs.make,
+  model: carSpecs.model,
+  transmission: carSpecs.transmission,
+  year: carSpecs.year
+  })
+
+  
+
+    if (carSpecs) { 
+      toast.success(`pinpointed exact car: ${carSpecs.year}, ${carSpecs.make}, ${carSpecs.model}, ${carSpecs.color}, ${carSpecs.engine}, ${carSpecs.transmission}!`)
+    }
+    
+    //if object with detailedCarInfo is returned, then setUload4icsModal(true)
+    //require them to uload 4 ics, one er side (can add logic to only accet each if llm judges its right side)
+    
+    //setIsModalOpen(true)
+    setIsOpen4Image(true)
+    setLoading(false)
+    } else {
+
    const response2 = await fetch(`${baseUrl}/getWBAYandGeneratePrice`, {//https://sellermvpbackend.onrender.com/
   method: 'POST',
   headers: {
@@ -102,6 +148,8 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   year: carSpecs.year
   })
 
+  
+
     if (carSpecs) { 
       toast.success(`pinpointed exact car: ${carSpecs.year}, ${carSpecs.make}, ${carSpecs.model}, ${carSpecs.color}, ${carSpecs.engine}, ${carSpecs.transmission}!`)
     }
@@ -112,7 +160,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     //setIsModalOpen(true)
     setIsOpen4Image(true)
     setLoading(false)
-
+    }
   }
   
   useEffect(() => {
@@ -131,7 +179,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       //add email to supabase database
       console.log("joinWaitlist function activated!")
 
-      /*const { data, error } = await supabase
+      const { data, error } = await supabase
       .from('waitlist')
       .insert([
         { email: email },
@@ -145,7 +193,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
         setUploadedFile(null);
       } else if (error) {
         toast("failed to add to launch waitlist!")
-      }*/
+      }
   }
 
 
@@ -157,7 +205,8 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
             Consumer Version
           </h1>
           <div className="space-y-4">
-  <Button
+            {uploadedFile && (
+              <Button
               onClick={getProductThenPrice}
               disabled={loading}
               className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:transform-none disabled:shadow-none"
@@ -171,6 +220,8 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
                 "Get Price & Condition"
               )}
             </Button>
+            )}
+  
   
   
 </div>

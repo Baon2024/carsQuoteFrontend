@@ -59,14 +59,7 @@ export default function Modal4Image({
   }, [carFront, carLeftSide, carBack, carRightSide]);
 
   
-  useEffect(() => {
-    return () => {
-      if (previewFront) URL.revokeObjectURL(previewFront)
-      if (previewLeft) URL.revokeObjectURL(previewLeft)
-      if (previewBack) URL.revokeObjectURL(previewBack)
-      if (previewRight) URL.revokeObjectURL(previewRight)
-    }
-  }, [previewFront, previewLeft, previewBack, previewRight])
+  
 
   useEffect(() => {
     return () => {
@@ -122,7 +115,7 @@ export default function Modal4Image({
         scratches: 0,
         dents: 0,
         brokenLights: 0,
-        comments: ""
+        comments: "No damage deteched for your car"
       }
     : data.damageAssessmentBreakdown
 );
